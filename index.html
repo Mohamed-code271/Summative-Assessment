@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Student Finance Tracker</title>
+        <link rel="stylesheet" href="styles/main.css">      
+    </head>
+    <body>
+        <a href="#main-content" class="skip-link">skip nav</a>
+        <div id="aria-status" class="sr-only" role="status" aria-live="polite"></div>
+        <div id="aria-alert" class="sr-only" role="alert" aria-live="assertive"></div>
+        <header class="app-header">
+            <div class="header-container">
+                <h1> Student Finance Tracker </h1>
+                <nav aria-label="Main Navigation">
+                    <ul class="nav-links">
+                        <li><a href="#about" class="nav-item">About</a></li>
+                        <li><a href="#dashboard" class="nav-item active">Dashboard</a></li>
+                        <li><a href="#records" class="nav-item">Records</a></li>
+                        <li><a href="#settings" class="nav-item">Settings</a></li>
+                    </ul>
+                    <button id="theme-toggle" class="btn btn-secondary" aria-label="Toggle dark mode">🌗 Theme</button>
+                </nav>
+            </div>
+        </header>
+        <main id="main-content" tabindex="-1">
+            <section id="about" class="app-section hidden" arial="labelledby=about-heading">
+                <h2 id="dashboard-heading">About This Application</h2>
+                <div class="card">
+                <p>The <strong>Student Finance Tracker</strong>is a lightweight, accessible web application designed to help students track budgets, control expenses, and understand spending patterns using simple realtime feedback systems.</p>
+                <p><strong>Developer Contact:</strong></p>
+                <ul>
+                    <li>Github:<a href="https://github.com/abdikarim-code271" target="_blank" rel="noopener noreferrer">contact:/github.com</a></li>
+                    <li>Email:<a href="mailto:a.mohamed1@alustudent.com">a.mohamed1@alustudent.com</a></li>
+                </ul>
+                </div>
+            </section>
+            <section id="dashboard" class="app-section" aria-labelledby="dashboard-heading">
+                <h2 id="dashboard-heading">Dashboard-Metrics</h2>
+                
+                <div class="metrics-grid">
+                    <div class="card stat-card">
+                        <h3>Total Transactions</h3>
+                        <p id="stat-count" class="stat-value">0</p>
+                    </div>
+                    <div class="card stat-card"
+                    <h3>Total Expenses</h3>
+                    <p id="stat-total" class="stat-value">RWF 0.00</p>
+                    </div>
+                    <div class="card stat-card">
+                        <h3>Top Category</h3>
+                        <p id="stat-top-category" class="stat-value">N/A</p>
+                    </div>
+                </div>
+                <div id="budget-alert-banner" class="card alert-banner hidden">
+                    <p id="budget-alert-text"></p>
+                </div>
+                <div class="card chart-container">
+                    <h3>7-Day Spending Trend</h3>
+                    <div id="trend-chart" class="bar-chart" aria-hidden="true"></div>
+                    <div id="chart-accessible-summary" class="sr-only"></div>
+                </div>
+            </section>
+            <section id="records" class="app-section" aria-labelledby="records-heading">
+                <h2 id="records-hidden">Transaction Records</h2>
+
+                <div class="controls-bar card">
+                 <div class="search-box">
+                  <label for="search-input">Live Regex Search</label>
+                  <div class="search-input-wrapper">
+                    <input type="text" id="search-input" placeholder="e.g.(coffee|tea) or \b(\w+)\s+\1\b">
+                    <span id="search-error" class="input-error-msg hidden">invalid regex pattern</span>
+                  </div>
+                 </div>
+                 <div class="sort-box">
+                    <label for="sort-select">Sort By:</label>
+                    <select id="sort-select">
+                     <option value="date-desc">Date (Newest)</option>
+                     <option value="date-asc">Date (Oldest)</option>
+                     <option value="description-asc">Description (A-Z)</option>
+                     <option value="description-desc">Description (Z-A)</option>
+                     <option value="amount-desc">Amount (Highest)</option>
+                     <option value="amount-asc">Amount (Lowest)</option>
+                    </select>
+                 </div>
+                 <button> id="btn-open-add" class="btn btn-primary">+ Add Newest Transaction </button>
+                </div>
+
+                <div id="from-container" class="card hidden">
+                 <h3 id="form-title">Add Transaction</h3>
+                 <form id="transaction-form" novalidate>
+                    <input type="hidden" id="form-id">
+
+                    <div class="form-group">
+                     <label for="form-description">Description/Title<span class="required">*</span></label>
+                     <input type="text" id="form-description" required>
+                     <small class="form-help">No leading/trailing spaces.Cannot contain duplicate consecutive words.</small>
+                     <span class="error-msg" id="err-description"></span>
+                    </div>
+                    <div class="form-group">
+                     <label for="form amount">Amount (RWF) <span class="required">*</span></label>
+                     <input type="number" id="form-amount" step="0.01" required>
+                     <small class="form-help">Valid positive number with upto 2 decimal places.</small>
+                     <span class="error-msg" id="err-amount"></span>
+                    </div>
+                    <div class="form-group">
+                     <label for="form-category">Category<span class="required">*</span></label>
+                     <select id="form-category" required></select>
+                     <span class="error-msg" id="err-category"></span>
+                    </div>
+                    <div class="form-group">
+                     <label for="form-date">Transaction Date<span class="required">*</span></label>
+                     <input type="date" id="form-date" required>
+                     <small class="form-help">format:YYYY-MM-DD</small>
+                     <span class="error-msg" id="err-date"></span>
+                    </div>
+                    <div class="form-actions">
+                     <button type="button" class="btn btn-secondary" id="btn-cancel-form">cancel</button>
+                    </div>
+                 </form>
+                </div>
+
+                <div class="table-responsive">
+                 <table class="date-table" id="transcation-table">
+                  <thead>
+                   <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Category</th>
+                    <th scope="col" class="text-right">Amount</th>
+                    <th scope="col" class="text-center">Actions</th>
+                   </tr>
+                    </thead>
+                    <tbody id="table-body"></tbody>
+                    </table>
+                </div>
+            </section>
+          
+            <section id="settings" class="app-section hidden" aria-labelledby="settings-heading">
+              <h2 id="settings-heading">System Settings</h2>
+              
+              <div class="card">
+               <h3>Budget Target Threshold</h3>
+               <div class="form-group">
+                <label for="settings-budget-cap">Monthly Spending Limit (RWF):</label>
+                <input type="number" id="settings-budget-cap" step="1">
+                <button id="btn-save-budget" class="btn btn-primary mt-2">Update Threshold Limit</button>
+               </div> 
+              </div>
+              <div class="card">
+                <h3>Currency Exchange Matrix</h3>
+                <p class="form-help">Set exchange rates relative o 1 Base Unit (RWF).</p>
+                <div class="grid-2-col">
+                 <div class="form-group">
+                    <label for="rate-usd">USD Rate (e.g., 0.00074):</label>
+                    <input type="number" id="rate-eur" step="0.000001">
+                 </div>
+                </div>
+                <button id="btn-save-rates" class="btn btn-primary mt-2">Apply Conversion Settings</button>
+              </div>
+              < class="card">
+                <h3>Backup and Recovery Portability System</h3>
+                <p class="form-help mb-2">Export your current records or restore system data via structured file transformations.</p>
+                <div class="form-actions">
+                 <button id="btn-export-json" class="btn btn-secondary">📤 Export Ledger Dataset</button>
+                 <button id="btn-export-csv" class="btn btn-secondary">Export Tabular CSV</button>
+                 <label for="btn-import-file" class="btn btn-primary cursor-pointer">📤 Upload JSON Record File</label>
+                 <input type="file" id="btn-import-file" accept=".json" class="sr-only">
+                </div>
+                <span class="error-msg block mt-2" id="import-validation-feedback"></span>
+              </div>
+            </section>
+        </main>
+        
+    <footer class="app-footer">
+      <div class="footer-container">
+       <p>&copy; 2026 Student Finance Tracker Subsystem. Built with native browser standards.</p>
+      </div>
+    </footer>
+
+  <script src="scripts/app.js"></script>
+    </body>
+</html>
