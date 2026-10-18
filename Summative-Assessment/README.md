@@ -4,7 +4,7 @@ An accessible, responsive finance tracker for students, built with vanilla HTML,
 
 Theme: Student Finance Tracker
 Live site (GitHub Pages): https://abdikarim-code271.github.io/Summative-Assessment/
-Demo video (unlisted): 
+Demo video (unlisted): https://youtu.be/uRL6TJO-F8w?si=DRhVREDtlV7ShDG8
 GitHub: https://github.com/abdikarim-code271
 Email: a.mohamed1@alustudent.com
 Features
