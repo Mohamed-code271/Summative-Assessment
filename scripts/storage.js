@@ -218,7 +218,6 @@ function validateImportedData(data) {
   };
 }
 
-.
 function exportRecordsAsJson() {
   return JSON.stringify(AppState.records, null, 2);
 }

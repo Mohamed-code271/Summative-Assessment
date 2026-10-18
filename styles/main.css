@@ -86,7 +86,7 @@ html[data-theme="dark"] .btn-secondary:hover {
   top: 0;
 }
 
-/* Accessible high contrast outline borders */
+
 *:focus-visible {
   outline: 3px solid lightskyblue;
   outline-offset: 2px;
@@ -172,7 +172,7 @@ html[data-theme="dark"] .btn-secondary:hover {
 }
 
 .btn-primary:hover {
-  background-color: white;
+  background-color: #1d4ed8;
 }
 
 .btn-secondary {

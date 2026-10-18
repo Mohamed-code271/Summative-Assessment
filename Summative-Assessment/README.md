@@ -3,11 +3,12 @@ Student Finance Tracker
 An accessible, responsive finance tracker for students, built with vanilla HTML, CSS and JavaScript. No frameworks.
 
 Theme: Student Finance Tracker
-Live site (GitHub Pages): https://abdikarim-code271.github.io/REPO-NAME/
-Demo video (unlisted): PASTE-VIDEO-LINK-HERE
+Live site (GitHub Pages): https://abdikarim-code271.github.io/Summative-Assessment/
+Demo video (unlisted): 
 GitHub: https://github.com/abdikarim-code271
 Email: a.mohamed1@alustudent.com
 Features
+
 Dashboard: total transactions, total expenses, top category, 7-day spending chart
 Spending cap with a live message: polite when under the cap, assertive when over
 Add, edit and delete transactions (delete asks for confirmation, edit updates updatedAt)
@@ -19,6 +20,7 @@ JSON import (validated before loading), JSON export, CSV export (properly escape
 Light / dark theme (saved)
 Sample data loaded from seed.json on first run
 Data model
+
 json
 {
   "id": "rec_0001",
@@ -33,6 +35,7 @@ json
 Amounts are always stored in RWF. Other currencies are only used for display, using the rates in Settings.
 
 Regex catalog
+
 Rule	Pattern	Examples
 Description (no leading/trailing spaces)	^\S(.*\S)?$	"Lunch" passes, " Lunch" fails
 Amount	^(0|[1-9]\d*)(\.\d{1,2})?$	12.50 passes, 1.234 and 012 fail
@@ -40,9 +43,11 @@ Date (YYYY-MM-DD)	^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$	2025-09-29 passe
 Category name (Settings)	^[A-Za-z]+(?:[ -][A-Za-z]+)*$	"Fast-food" passes, "Food2" fails
 Advanced: duplicate word (back-reference)	\b(\w+)\s+\1\b	"the the cat" is rejected
 
+
 Dates are also checked against the calendar, so 2025-02-31 is rejected even though it matches the pattern.
 
 Search examples
+
 Goal	Pattern
 Cents present	\.\d{2}\b
 Beverage keyword	(coffee|tea)
@@ -52,6 +57,7 @@ Starts with a capital letter	^[A-Z]
 Invalid patterns do not crash the app. A message appears under the search box and the table keeps showing the last valid view.
 
 Keyboard map
+
 Key	Action
 Tab / Shift+Tab	Move between controls
 Enter / Space	Activate buttons and links
@@ -60,6 +66,7 @@ Up / Down arrows	Change the sort dropdown
 Enter inside the form	Save the transaction
 Space	Toggle the case-insensitive checkbox
 Accessibility notes
+
 Semantic landmarks (header, nav, main, section, footer) and a proper heading order
 Skip link and visible focus outlines on every control
 Every input has a label; invalid fields get aria-invalid and an error message
@@ -81,9 +88,11 @@ Install the Live Server extension
 Right-click index.html and choose Open with Live Server
 Run the tests
 
+
 Open tests.html with Live Server. The page lists PASS or FAIL for each check (regex rules, search helpers, CSV escaping, import validation) and shows a summary at the top.
 
 Project structure
+
 index.html
 tests.html
 seed.json
@@ -105,6 +114,7 @@ Export JSON: downloads all records as transactions.json
 Export CSV: downloads transactions.csv (fields with commas or quotes are escaped)
 Import JSON: the file is checked first (must be a list, each record needs a unique id, valid description, amount above 0, real date and timestamps). If anything is wrong, nothing is changed and the errors are shown.
 Milestones
+
 Milestone	Focus
 M1	Spec, wireframe, data model, a11y plan
 M2	Semantic HTML and base CSS
