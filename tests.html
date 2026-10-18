@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Regex and Logic Tests</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 700px; margin: 2rem auto; padding: 0 1rem; }
+    li { padding: 0.25rem 0; }
+    .pass { color: green; }
+    .fail { color: red; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Tests</h1>
+  <p id="summary" role="status">Running...</p>
+  <ul id="results"></ul>
+
+  <script src="scripts/state.js"></script>
+  <script src="scripts/storage.js"></script>
+  <script src="scripts/validators.js"></script>
+  <script src="scripts/search.js"></script>
+  <script>
+    var passed = 0;
+    var failed = 0;
+
+    function check(name, condition) {
+      var li = document.createElement("li");
+      if (condition) {
+        passed++;
+        li.className = "pass";
+        li.textContent = "PASS: " + name;
+      } else {
+        failed++;
+        li.className = "fail";
+        li.textContent = "FAIL: " + name;
+      }
+      document.getElementById("results").appendChild(li);
+    }
+
+    
+    check("description accepts 'Lunch at cafeteria'", REGEX_RULES.descriptionPattern.test("Lunch at cafeteria"));
+    check("description rejects leading space", !REGEX_RULES.descriptionPattern.test(" Lunch"));
+    check("description rejects trailing space", !REGEX_RULES.descriptionPattern.test("Lunch "));
+    check("double space is detected", REGEX_RULES.doubleSpacePattern.test("Lunch  at"));
+
+    
+    check("amount accepts 12.50", REGEX_RULES.amountPattern.test("12.50"));
+    check("amount accepts 0", REGEX_RULES.amountPattern.test("0"));
+    check("amount rejects 012", !REGEX_RULES.amountPattern.test("012"));
+    check("amount rejects 1.234", !REGEX_RULES.amountPattern.test("1.234"));
+    check("amount rejects -5", !REGEX_RULES.amountPattern.test("-5"));
+
+    check("date accepts 2025-09-29", REGEX_RULES.datePattern.test("2025-09-29"));
+    check("date accepts 2024-02-29", REGEX_RULES.datePattern.test("2024-02-29"));
+    check("date rejects 2025-13-01", !REGEX_RULES.datePattern.test("2025-13-01"));
+    check("date rejects 2025-00-10", !REGEX_RULES.datePattern.test("2025-00-10"));
+    check("date rejects 2025-09-32", !REGEX_RULES.datePattern.test("2025-09-32"));
+    check("isRealDateString accepts leap day 2024-02-29", isRealDateString("2024-02-29"));
+    check("isRealDateString rejects 2025-02-31", !isRealDateString("2025-02-31"));
+
+    
+    check("category accepts 'Food'", REGEX_RULES.categoryPattern.test("Food"));
+    check("category accepts 'Fast-food places'", REGEX_RULES.categoryPattern.test("Fast-food places"));
+    check("category rejects digits", !REGEX_RULES.categoryPattern.test("Food2"));
+    check("category rejects double space", !REGEX_RULES.categoryPattern.test("Food  Court"));
+
+    
+    check("duplicate word found in 'the the cat'", REGEX_RULES.duplicateWordPattern.test("the the cat"));
+    check("duplicate word found ignoring case 'Coffee coffee'", REGEX_RULES.duplicateWordPattern.test("Coffee coffee"));
+    check("no duplicate in 'the cat sat'", !REGEX_RULES.duplicateWordPattern.test("the cat sat"));
+
+
+    check("compileRegex returns null for '('", compileRegex("(", "i") === null);
+    check("compileRegex returns null for empty text", compileRegex("", "i") === null);
+    check("compileRegex works for 'coffee'", compileRegex("coffee", "i") instanceof RegExp);
+    check("highlight wraps match in <mark>", highlightMatches("a coffee", compileRegex("coffee", "gi")) === "a <mark>coffee</mark>");
+    check("highlight escapes HTML", highlightMatches("<b>", null) === "&lt;b&gt;");
+    check("highlight survives empty matches", highlightMatches("abc", compileRegex("x*", "g")) === "abc");
+
+
+    check("csv leaves plain text alone", escapeCsvField("hello") === "hello");
+    check("csv wraps text with comma", escapeCsvField("a,b") === '"a,b"');
+    check("csv doubles quotes", escapeCsvField('say "hi"') === '"say ""hi"""');
+
+    var goodRecord = { id: "rec_1", description: "Test", amount: 5, category: "Food",
+                       date: "2025-01-01", createdAt: "x", updatedAt: "x" };
+    check("import accepts a valid record", validateImportedData([goodRecord]).valid);
+    check("import rejects a non-array", !validateImportedData({}).valid);
+    check("import rejects an empty list", !validateImportedData([]).valid);
+    check("import rejects duplicate ids", !validateImportedData([goodRecord, goodRecord]).valid);
+    check("import rejects a bad date", !validateImportedData([{ id: "rec_2", description: "Test", amount: 5,
+      category: "Food", date: "2025-02-31", createdAt: "x", updatedAt: "x" }]).valid);
+
+    document.getElementById("summary").textContent = passed + " passed, " + failed + " failed.";
+  </script>
+</body>
+</html>

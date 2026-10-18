@@ -43,9 +43,7 @@ function generateRecordId() {
 
   return "rec_" + nextNumber;
 }
-   var nextNumber.length < 4) {
-    nextNumber = "0" + nextNumber;
-   }
+ 
 
    return "rec_" + nextNumber;
 
