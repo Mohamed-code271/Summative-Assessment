@@ -248,7 +248,6 @@ html[data-theme="dark"] .btn-secondary:hover {
   color: #dc2626;
 }
 
-/* Custom Micro Chart Bar graphics track wrapper */
 .bar-chart {
   display: flex;
   align-items: flex-end;
